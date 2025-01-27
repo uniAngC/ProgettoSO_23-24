@@ -1,5 +1,6 @@
 #include "buddy_allocator.h"
 #include <stdio.h>
+#include "pseudo_malloc.h"
 
 #define BITMAP_SIZE 2 << 14
 #define BUDDY_LEVELS 16
@@ -26,21 +27,26 @@ int main(int argc, char **argv)
                                   bitmap_buffer,
                                   bitmap_buffer_size,
                                   min_bucket_size);
-    if (res == 0)
+    if (res == -1)
     {
         printf("Errore di inizializzazione del Buddy Allocator\n");
-        return 0;
+        return -1;
     }
     void *blocks[20];
     printf("\n-----ALLOCAZIONE-----\n");
     for (int i = 0; i < 20; i++)
     {
-        void *p = BuddyAllocator_malloc(&alloc, (1 << i + 1) - 8);
+        void *p = pseudo_malloc(&alloc, (1 << i + 1) - 8);
         blocks[i] = p;
     }
     printf("\n-----FREE-----\n");
     for (int i = 0; i < 20; i++)
     {
-        BuddyAllocator_free(&alloc, blocks[i]);
+        pseudo_free(&alloc, blocks[i]);
+    }
+    printf("\n-----ALLOCAZIONE 2-----\n");
+    for (int i = 0; i < 20; i++)
+    {
+        pseudo_malloc(&alloc, (1 << i + 1) - 8);
     }
 }

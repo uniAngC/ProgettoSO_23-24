@@ -15,11 +15,11 @@ int levelIdx(size_t idx)
 // index of the buddy of node i
 int buddyIdx(int idx)
 {
-    if (idx == 0)
+    if (idx == 0) // radice
         return 0;
-    if (idx & 0x1)
+    if (idx % 2) // se pari
         return idx - 1;
-    return idx + 1;
+    return idx + 1; // altrimenti se dispari
 }
 // parent of the node idx
 int parentIdx(int idx)
@@ -46,18 +46,48 @@ int BuddyAllocator_init(BuddyAllocator *alloc,
                         int bitmap_buffer_size,
                         int min_bucket_size)
 {
-    // check on num_levels
-    assert("Numero di Livelli Superiore al Massimo (20 -> 1MB)" && num_levels < MAX_LEVELS);
+    if (num_levels >= MAX_LEVELS)
+    {
+        printf("[ERRORE] Creazione Buddy Allocator: Numero di livelli superiore al massimo consentito (%d)\n", MAX_LEVELS);
+        return -1;
+    }
 
-    // check on min_bucket_size
-    assert("Dimensione del min_bucket size troppo piccola (<8)" && min_bucket_size >= 8);
+    if (!memory)
+    {
+        printf("[ERRORE] Creazione Buddy Allocator: Puntatore alla memoria fornita è NULL\n");
+        return -1;
+    }
 
-    // se la memoria non è una potenza di 2, verrà utilizzata la porzione di memoria
-    // più grande possibile (disponibile) che è potenza di 2
+    if (memory_size <= 0)
+    {
+        printf("[ERRORE] Creazione Buddy Allocator: La dimensione della memoria deve essere maggiore di 0\n");
+        return -1;
+    }
+
+    if (!bitmap_buffer)
+    {
+        printf("[ERRORE] Creazione Buddy Allocator: Puntatore al buffer per la bitmap è NULL\n");
+        return -1;
+    }
+
+    if (bitmap_buffer_size <= 0)
+    {
+        printf("[ERRORE] Creazione Buddy Allocator: La dimensione del buffer per la bitmap deve essere maggiore di 0\n");
+        return -1;
+    }
+
+    // Controllo sulla consistenza di min_bucket_size
+    if (min_bucket_size != memory_size >> num_levels)
+    {
+        printf("[ERRORE] Creazione Buddy Allocator: min_bucket_size non è valido rispetto alla dimensione della memoria e al numero di livelli\n");
+        return -1;
+    }
+
+    // Arrotondamento della memoria alla potenza di 2 più vicina
     if (log2(memory_size) != floor(log2(memory_size)))
     {
         memory_size = min_bucket_size << num_levels;
-        printf("[INFO] Memoria utilizzata: %d bytes (arrotondata a potenza di 2)\n", memory_size);
+        printf("[INFO] Memoria arrotondata a potenza di 2: %d bytes\n", memory_size);
     }
 
     alloc->num_levels = num_levels;
@@ -65,28 +95,33 @@ int BuddyAllocator_init(BuddyAllocator *alloc,
     alloc->memory_size = memory_size;
     alloc->min_bucket_size = min_bucket_size;
 
-    // check e inizializzazione bitmap
+    // Calcolo e inizializzazione della bitmap
     int num_bits = (1 << (num_levels + 1)) - 1;
-    assert("Memoria insufficiente per contenere la bitmap" && bitmap_buffer_size >= BitMap_getBytes(num_bits));
+    if (bitmap_buffer_size < BitMap_getBytes(num_bits))
+    {
+        printf("[ERRORE] Creazione Buddy Allocator: Memoria fornita insufficiente per contenere la bitmap (richiesti: %d bytes)\n", BitMap_getBytes(num_bits));
+        return -1;
+    }
 
     BitMap_init(&(alloc->bitmap), num_bits, bitmap_buffer);
-    printf("\n[Buddy Allocator Inizializzato]\n");
+    printf("\n[INFO] Buddy Allocator Inizializzato con successo:\n");
     printf("- Livelli: %d\n", num_levels);
     printf("- Dimensione della Memoria: %d bytes\n", memory_size);
     printf("- Numero di bit nella Bitmap: %d\n", num_bits);
     printf("- Dimensione della Bitmap: %d bytes\n", BitMap_getBytes(num_bits));
-    printf("- Dimensione minima dei blocchi: %d bytes\n\n", min_bucket_size);
-    return 1;
+    printf("- Dimensione minima dei blocchi: %d bytes\n", min_bucket_size);
+    return 0;
 }
 
+// Cerca un buddy libero da restituire alla malloc
 void *BuddyAllocator_getBuddy(BuddyAllocator *alloc, int level, int size)
 {
-    int idx = -1;
+    int bitmap_idx = -1;
     if (level == 0)
     {
         int bit = BitMap_bit(&alloc->bitmap, firstIdx(level));
         if (bit == 0)
-            idx = 0;
+            bitmap_idx = 0;
     }
     else
     {
@@ -96,29 +131,28 @@ void *BuddyAllocator_getBuddy(BuddyAllocator *alloc, int level, int size)
             int bit = BitMap_bit(&alloc->bitmap, i);
             if (bit == 0)
             {
-                idx = i;
+                bitmap_idx = i;
                 break;
             }
             i++;
         }
     }
-    if (idx == -1)
+    if (bitmap_idx == -1)
     {
         return NULL;
     }
     else
     {
-        // si aggiorna la bitmap settando ad 1 i blocchi padre e figli del blocco appena preso
-        update_child(&alloc->bitmap, idx, 1);
-        update_parent(&alloc->bitmap, idx, 1);
-        int block_size = alloc->min_bucket_size << (alloc->num_levels - level);
-        char *ret = alloc->memory + ((startIdx(idx) + 1) * block_size);
+        update_child(&alloc->bitmap, bitmap_idx, 1);
+        update_parent(&alloc->bitmap, bitmap_idx, 1);
 
-        // ci salviamo nel blocco l'indice corrispettivo della bitmap
-        // essendoci fatto spazio precedentemente
-        ((int *)ret)[0] = idx;
+        int block_size = alloc->min_bucket_size << (alloc->num_levels - level);
+
+        char *ret = alloc->memory + ((startIdx(bitmap_idx) + 1) * block_size);
+
+        ((int *)ret)[0] = bitmap_idx;
         ((int *)ret)[1] = size;
-        return (void *)(ret + 2 * sizeof(int)); // + size dell'indirizzo del blocco in bitmap
+        return (void *)(ret + 2 * sizeof(int));
     }
 }
 
@@ -126,31 +160,26 @@ void *BuddyAllocator_malloc(BuddyAllocator *alloc, int size)
 {
     if (size < 0)
     {
-        printf("[ERRORE] Dimensione non valida per malloc.\n");
+        printf("[ERRORE] malloc: Dimensione non valida\n");
         return NULL;
     }
     if (size == 0)
     {
-        printf("[ERRORE] Impossibile allocare 0 byte.\n");
+        printf("[ERRORE] malloc: Impossibile allocare 0 byte\n");
         return NULL;
     }
 
     int org_size = size;
-    size += 2 * sizeof(int); // aggiungo spazio per salvare metadata (indice del blocco e dimensione) nella bitmap
+    size += 2 * sizeof(int);
 
     if (size > alloc->memory_size)
     {
-        printf("[ERRORE] Memoria richiesta (%d bytes) supera la memoria disponibile (%d bytes).\n", size, alloc->memory_size);
+        printf("[ERRORE] malloc: Memoria richiesta (%d bytes) supera la memoria disponibile (%d bytes)\n", size, alloc->memory_size);
         return NULL;
     }
 
-    // we determine the level of the page
     int mem_size = (1 << alloc->num_levels) * alloc->min_bucket_size;
-    // log2(mem_size): n bits to represent the whole memory
-    // log2(size): n nits to represent the requested chunk
-    // bits_mem_size-bits_size = depth of the chunk = level
     int level = floor(log2(mem_size / size));
-    // if the level is too small, we pad it to max
     if (level > alloc->num_levels)
     {
         level = alloc->num_levels;
@@ -162,11 +191,11 @@ void *BuddyAllocator_malloc(BuddyAllocator *alloc, int size)
     void *indirizzo = BuddyAllocator_getBuddy(alloc, level, org_size);
     if (indirizzo == NULL)
     {
-        printf("[ERRORE] Nessun blocco di memoria libero disponibile.\n");
+        printf("[ERRORE] malloc: Nessun blocco di memoria libero disponibile\n");
     }
     else
     {
-        printf("[SUCCESSO] Allocazione completata: indirizzo %p, dimensione %d bytes\n", indirizzo, alloc->min_bucket_size << (alloc->num_levels - level));
+        printf("[SUCCESSO] malloc: Allocazione completata: indirizzo %p, dimensione %d bytes\n", indirizzo, alloc->min_bucket_size << (alloc->num_levels - level));
         return indirizzo;
     }
     return NULL;
@@ -176,13 +205,14 @@ void BuddyAllocator_free(BuddyAllocator *alloc, void *mem)
 {
     if (!mem)
     {
-        printf("[ERRORE] Puntatore NULL fornito a free.\n");
+        printf("[ERRORE] Puntatore NULL fornito a free\n");
         return;
     }
 
+    // ricerca del bit del buddy, precendentemente salvato in memoria
     int *p = (int *)mem;
-    p--;
-    int idx = *(--p);
+    p--;              // salto della size precedente salvata nel blocco
+    int idx = *(--p); // indice della bitmap del blocco
     BuddyAllocator_releaseBuddy(alloc, idx, mem);
 }
 
@@ -201,27 +231,36 @@ void BuddyAllocator_releaseBuddy(BuddyAllocator *alloc, int bit, void *mem)
 void merge(BitMap *bitmap, int bit)
 {
     if (bit == 0)
-        return;
+        return; // radice
 
     int value = BitMap_bit(bitmap, bit);
     if (value == 1)
-        return;
+        printf("[ERRORE] bitmap: merge su bit 1\n");
+    return;
 
     int buddy = buddyIdx(bit);
     value = BitMap_bit(bitmap, buddy);
+    // controllo se il buddy è libero o no
     if (value == 1)
-        return;
-
-    int parent = parentIdx(bit);
-    BitMap_setBit(bitmap, parent, 0);
-    merge(bitmap, parent);
+    {
+        return; // non è libero, non si fa nulla
+    }
+    else
+    { // imposta il bit del padre a 0 facendo il merge dei figli ricorsivamente
+        int parent = parentIdx(bit);
+        BitMap_setBit(bitmap, parent, 0);
+        merge(bitmap, parent); // ricorsione in risalita
+    }
 }
 
+// imposta il bit stesso e il bit del padre nella bitmap al valore passato come argomento 1 oppure 0
 void update_parent(BitMap *bitmap, int bit, int value)
 {
     BitMap_setBit(bitmap, bit, value);
     if (bit > 0)
-        update_parent(bitmap, parentIdx(bit), value);
+    {
+        update_parent(bitmap, parentIdx(bit), value); // ricorsione in salita
+    }
 }
 
 void update_child(BitMap *bitmap, int bit, int value)
@@ -229,8 +268,8 @@ void update_child(BitMap *bitmap, int bit, int value)
     if (bit < bitmap->num_bits)
     {
         BitMap_setBit(bitmap, bit, value);
-        // ricorsione sui figli, in discesa
-        update_child(bitmap, bit * 2 + 1, value);
-        update_child(bitmap, bit * 2 + 2, value);
+        // ricorsione sui figli in discesa
+        update_child(bitmap, bit * 2 + 1, value); // sinistro
+        update_child(bitmap, bit * 2 + 2, value); // destro
     }
 }
