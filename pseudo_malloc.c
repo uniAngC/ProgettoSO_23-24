@@ -51,9 +51,9 @@ void *pseudo_malloc(BuddyAllocator *alloc, int size)
 }
 
 // Funzione per la deallocazione della memoria
-void pseudo_free(BuddyAllocator *alloc, void *mem)
+void pseudo_free(BuddyAllocator *alloc, void **mem)
 {
-    if (!mem)
+    if (!(*mem))
     {
         printf("[ERRORE2] Deallocazione fallita: puntatore NULL fornito\n");
         return;
@@ -61,7 +61,7 @@ void pseudo_free(BuddyAllocator *alloc, void *mem)
 
     // Tramite la variabile che tiene salvata la dimensione del blocco (overhead escluso)
     // controlla e dealloca con munmap o BuddyAllocator_free
-    int *p = (int *)mem;
+    int *p = (int *)(*mem);
     int size = *(--p);
     if (size >= THRESHOLD)
     {
@@ -72,12 +72,12 @@ void pseudo_free(BuddyAllocator *alloc, void *mem)
             printf("[ERRORE2] Deallocazione fallita: munmap failed\n");
             return;
         }
-        printf("[SUCCESSO2] Deallocazione con munmap. Blocco liberato: %p\n", mem);
+        printf("[SUCCESSO2] Deallocazione con munmap. Blocco liberato: %p\n", *mem);
+        *mem = NULL;
     }
     else
     {
         printf("[INFO2] Deallocazione richiesta con Buddy Allocator\n");
-        BuddyAllocator_free(alloc, mem);
-        printf("[SUCCESSO2] Deallocazione con Buddy Allocator. Blocco liberato: %p\n", mem);
+        BuddyAllocator_free(alloc, *mem);
     }
 }

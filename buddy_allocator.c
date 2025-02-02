@@ -235,8 +235,10 @@ void merge(BitMap *bitmap, int bit)
 
     int value = BitMap_bit(bitmap, bit);
     if (value == 1)
+    {
         printf("[ERRORE] bitmap: merge su bit 1\n");
-    return;
+        return;
+    }
 
     int buddy = buddyIdx(bit);
     value = BitMap_bit(bitmap, buddy);
