@@ -4,58 +4,55 @@
 #include <sys/mman.h>
 #include <errno.h>
 #include <string.h>
-#define MAP_ANONYMOUS 0x20 // altrimenti errore. Provato a risolvere, nulla, dovuto definire manualmente
+#define MAP_ANONYMOUS 0x20 // Definizione manuale, altrimenti errore
 
 // Funzione per l'allocazione della memoria
 void *pseudo_malloc(BuddyAllocator *alloc, int size)
 {
     if (size < 0)
     {
-        printf("[ERRORE2] Allocazione fallita: dimensione non valida (<0)\n");
+        printf("[ERRORE] pseudo_malloc: dimensione non valida (<0)\n");
         return NULL;
     }
     if (size == 0)
     {
-        printf("[ERRORE2] Allocazione fallita: impossibile allocare 0 byte\n");
+        printf("[ERRORE] pseudo_malloc: impossibile allocare 0 byte\n");
         return NULL;
     }
 
     // Se la dimensione supera una soglia, si usa mmap per allocare la memoria
     if (size >= THRESHOLD)
     {
-        printf("[INFO2] Allocazione richiesta con mmap. Dimensione: %d bytes\n", size);
-        int memory_size = size + sizeof(int); // per salvare la dimensione
+        printf("[INFO] mmap: richiesta Dimensione: %d bytes (+%lu bytes overhead)\n", size, sizeof(int));
+        int memory_size = size + sizeof(int); // per salvare la dimensione, si aggiunge 4 bytes di overhead
         void *p = mmap(NULL, memory_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 
         if (p == MAP_FAILED)
         {
-            printf("[ERRORE2] mmap fallita: %s\n", strerror(errno));
+            printf("[ERRORE] mmap: %s\n", strerror(errno));
             return NULL;
         }
         ((int *)p)[0] = memory_size; // Salvataggio della dimensione originale
-        printf("[SUCCESSO2] Allocazione con mmap. Indirizzo: %p, Dimensione: %d bytes\n", p + sizeof(int), memory_size);
+        printf("[SUCCESSO] mmap: allocazione Indirizzo: %p, Dimensione: %d bytes\n", p + sizeof(int), memory_size);
         return (void *)(p + sizeof(int));
     }
     else
     {
-        printf("[INFO2] Allocazione richiesta con Buddy Allocator. Dimensione: %d bytes\n", size);
         void *p = BuddyAllocator_malloc(alloc, size);
         if (!p)
         {
-            printf("[ERRORE2] Allocazione fallita: Buddy Allocator esaurito\n");
             return NULL;
         }
-        printf("[SUCCESSO2] Allocazione con Buddy Allocator. Indirizzo: %p\n", p);
         return p;
     }
 }
 
-// Funzione per la deallocazione della memoria
+// Funzione per la deallocazione della memoria (non viene contato l'overhead)
 void pseudo_free(BuddyAllocator *alloc, void **mem)
 {
     if (!(*mem))
     {
-        printf("[ERRORE2] Deallocazione fallita: puntatore NULL fornito\n");
+        printf("[ERRORE] Deallocazione fallita: puntatore NULL fornito\n");
         return;
     }
 
@@ -65,19 +62,19 @@ void pseudo_free(BuddyAllocator *alloc, void **mem)
     int size = *(--p);
     if (size >= THRESHOLD)
     {
-        printf("[INFO2] Deallocazione richiesta con munmap\n");
+        printf("[INFO] Deallocazione richiesta con munmap\n");
         int ret = munmap((void *)p, size);
         if (ret != 0)
         {
-            printf("[ERRORE2] Deallocazione fallita: munmap failed\n");
+            printf("[ERRORE] Deallocazione fallita: %s\n", strerror(errno));
             return;
         }
-        printf("[SUCCESSO2] Deallocazione con munmap. Blocco liberato: %p\n", *mem);
-        *mem = NULL;
+        printf("[SUCCESSO] Deallocazione con munmap. Blocco liberato: %p\n", *mem);
+        *mem = NULL; // per evitare segmantation fault nei test double free
     }
     else
     {
-        printf("[INFO2] Deallocazione richiesta con Buddy Allocator\n");
+        printf("[INFO] Deallocazione richiesta con Buddy Allocator\n");
         BuddyAllocator_free(alloc, *mem);
     }
 }

@@ -1,114 +1,114 @@
-==368341== Memcheck, a memory error detector
-==368341== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==368341== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
-==368341== Command: ./buddy_allocator_test
-==368341==
---368341-- Valgrind options:
---368341--    --leak-check=full
---368341--    --show-leak-kinds=all
---368341--    --track-origins=yes
---368341--    --verbose
---368341-- Contents of /proc/version:
---368341--   Linux version 5.15.167.4-microsoft-standard-WSL2 (root@f9c826d3017f) (gcc (GCC) 11.2.0, GNU ld (GNU Binutils) 2.37) #1 SMP Tue Nov 5 00:21:55 UTC 2024
---368341--
---368341-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
---368341-- Page sizes: currently 4096, max supported 4096
---368341-- Valgrind library directory: /usr/libexec/valgrind
---368341-- Reading syms from /home/uniuser/ProgettoSO_23-24/buddy_allocator_test
---368341-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
---368341--   Considering /usr/lib/debug/.build-id/41/86944c50f8a32b47d74931e3f512b811813b64.debug ..
---368341--   .. build-id is valid
---368341-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
---368341--    object doesn't have a symbol table
---368341--    object doesn't have a dynamic symbol table
---368341-- Scheduler: using generic scheduler lock implementation.
---368341-- Reading suppressions file: /usr/libexec/valgrind/default.supp
-==368341== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-368341-by-uniuser-on-???
-==368341== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-368341-by-uniuser-on-???
-==368341== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-368341-by-uniuser-on-???
-==368341==
-==368341== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==368341== don't want to do, unless you know exactly what you're doing,
-==368341== or are doing some strange experiment):
-==368341==   /usr/bin/vgdb --pid=368341 ...command...
-==368341==
-==368341== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==368341==   /path/to/gdb ./buddy_allocator_test
-==368341== and then give GDB the following command
-==368341==   target remote | /usr/bin/vgdb --pid=368341
-==368341== --pid is optional if only one valgrind process is running
-==368341==
---368341-- REDIR: 0x402aa40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
---368341-- REDIR: 0x402a810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
---368341-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
---368341--    object doesn't have a symbol table
---368341-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
---368341--    object doesn't have a symbol table
-==368341== WARNING: new redirection conflicts with existing -- ignoring it
---368341--     old: 0x0402aa40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
---368341--     new: 0x0402aa40 (strlen              ) R-> (2007.0) 0x0484ee30 strlen
---368341-- REDIR: 0x4027220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484fcd0 (strcmp)
---368341-- REDIR: 0x402afa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853840 (mempcpy)
---368341-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
---368341--   Considering /usr/lib/debug/.build-id/a5/08ec5d8bf12fb7fd08204e0f87518e5cd0b102.debug ..
---368341--   .. build-id is valid
---368341-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
---368341--   Considering /usr/lib/debug/.build-id/49/0fef8403240c91833978d494d39e537409b92e.debug ..
---368341--   .. build-id is valid
-==368341== WARNING: new redirection conflicts with existing -- ignoring it
---368341--     old: 0x049f1c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---368341--     new: 0x049f1c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
-==368341== WARNING: new redirection conflicts with existing -- ignoring it
---368341--     old: 0x049f1c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---368341--     new: 0x049f1c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
-==368341== WARNING: new redirection conflicts with existing -- ignoring it
---368341--     old: 0x049f1c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---368341--     new: 0x049f1c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
-==368341== WARNING: new redirection conflicts with existing -- ignoring it
---368341--     old: 0x049f1c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---368341--     new: 0x049f1c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
---368341-- REDIR: 0x49f4720 (libc.so.6:strnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f49e0 (libc.so.6:strpbrk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f42e0 (libc.so.6:strcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x4a12cd0 (libc.so.6:wcsnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f56d0 (libc.so.6:memset) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x4a11540 (libc.so.6:wcslen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f5c10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x4a11370 (libc.so.6:wcschr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f4260 (libc.so.6:index) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f4960 (libc.so.6:rindex) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f55a0 (libc.so.6:memmove) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
-==368341== Preferring higher priority redirection:
---368341--     old: 0x04aec7c0 (__memcpy_avx_unalign) R-> (2018.0) 0x04850f90 __memcpy_avx_unaligned_erms
---368341--     new: 0x04aec7c0 (__memcpy_avx_unalign) R-> (2018.1) 0x04852880 memmove
---368341-- REDIR: 0x4a113f0 (libc.so.6:wcscmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f59e0 (libc.so.6:stpncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x4a119b0 (libc.so.6:wmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f4830 (libc.so.6:strncmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f5a70 (libc.so.6:strcasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f4420 (libc.so.6:strcspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x4a11470 (libc.so.6:wcscpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f41d0 (libc.so.6:strcat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f5b60 (libc.so.6:strncasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f5480 (libc.so.6:bcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49fd570 (libc.so.6:memrchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f7010 (libc.so.6:strchrnul) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f4390 (libc.so.6:strcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f5b10 (libc.so.6:strcasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f46a0 (libc.so.6:strlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f48d0 (libc.so.6:strncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f5950 (libc.so.6:stpcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f53f0 (libc.so.6:memchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f4b00 (libc.so.6:strspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f57d0 (libc.so.6:mempcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f5ac0 (libc.so.6:strncasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x49f6f80 (libc.so.6:rawmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---368341-- REDIR: 0x4ae9610 (libc.so.6:__strrchr_avx2) redirected to 0x484e810 (rindex)
---368341-- REDIR: 0x4ae9400 (libc.so.6:__strchrnul_avx2) redirected to 0x4853330 (strchrnul)
---368341-- REDIR: 0x49f10a0 (libc.so.6:malloc) redirected to 0x4848820 (malloc)
---368341-- REDIR: 0x4aec780 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4853440 (mempcpy)
+==387560== Memcheck, a memory error detector
+==387560== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==387560== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
+==387560== Command: ./buddy_allocator_test
+==387560==
+--387560-- Valgrind options:
+--387560--    --leak-check=full
+--387560--    --show-leak-kinds=all
+--387560--    --track-origins=yes
+--387560--    --verbose
+--387560-- Contents of /proc/version:
+--387560--   Linux version 5.15.167.4-microsoft-standard-WSL2 (root@f9c826d3017f) (gcc (GCC) 11.2.0, GNU ld (GNU Binutils) 2.37) #1 SMP Tue Nov 5 00:21:55 UTC 2024
+--387560--
+--387560-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--387560-- Page sizes: currently 4096, max supported 4096
+--387560-- Valgrind library directory: /usr/libexec/valgrind
+--387560-- Reading syms from /home/uniuser/ProgettoSO_23-24/buddy_allocator_test
+--387560-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--387560--   Considering /usr/lib/debug/.build-id/41/86944c50f8a32b47d74931e3f512b811813b64.debug ..
+--387560--   .. build-id is valid
+--387560-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--387560--    object doesn't have a symbol table
+--387560--    object doesn't have a dynamic symbol table
+--387560-- Scheduler: using generic scheduler lock implementation.
+--387560-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==387560== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-387560-by-uniuser-on-???
+==387560== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-387560-by-uniuser-on-???
+==387560== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-387560-by-uniuser-on-???
+==387560==
+==387560== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==387560== don't want to do, unless you know exactly what you're doing,
+==387560== or are doing some strange experiment):
+==387560==   /usr/bin/vgdb --pid=387560 ...command...
+==387560==
+==387560== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==387560==   /path/to/gdb ./buddy_allocator_test
+==387560== and then give GDB the following command
+==387560==   target remote | /usr/bin/vgdb --pid=387560
+==387560== --pid is optional if only one valgrind process is running
+==387560==
+--387560-- REDIR: 0x402aa40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
+--387560-- REDIR: 0x402a810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
+--387560-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--387560--    object doesn't have a symbol table
+--387560-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--387560--    object doesn't have a symbol table
+==387560== WARNING: new redirection conflicts with existing -- ignoring it
+--387560--     old: 0x0402aa40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
+--387560--     new: 0x0402aa40 (strlen              ) R-> (2007.0) 0x0484ee30 strlen
+--387560-- REDIR: 0x4027220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484fcd0 (strcmp)
+--387560-- REDIR: 0x402afa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853840 (mempcpy)
+--387560-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--387560--   Considering /usr/lib/debug/.build-id/a5/08ec5d8bf12fb7fd08204e0f87518e5cd0b102.debug ..
+--387560--   .. build-id is valid
+--387560-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--387560--   Considering /usr/lib/debug/.build-id/49/0fef8403240c91833978d494d39e537409b92e.debug ..
+--387560--   .. build-id is valid
+==387560== WARNING: new redirection conflicts with existing -- ignoring it
+--387560--     old: 0x049f1c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--387560--     new: 0x049f1c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==387560== WARNING: new redirection conflicts with existing -- ignoring it
+--387560--     old: 0x049f1c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--387560--     new: 0x049f1c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+==387560== WARNING: new redirection conflicts with existing -- ignoring it
+--387560--     old: 0x049f1c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--387560--     new: 0x049f1c60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==387560== WARNING: new redirection conflicts with existing -- ignoring it
+--387560--     old: 0x049f1c60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--387560--     new: 0x049f1c60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+--387560-- REDIR: 0x49f4720 (libc.so.6:strnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f49e0 (libc.so.6:strpbrk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f42e0 (libc.so.6:strcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x4a12cd0 (libc.so.6:wcsnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f56d0 (libc.so.6:memset) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x4a11540 (libc.so.6:wcslen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f5c10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x4a11370 (libc.so.6:wcschr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f4260 (libc.so.6:index) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f4960 (libc.so.6:rindex) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f55a0 (libc.so.6:memmove) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+==387560== Preferring higher priority redirection:
+--387560--     old: 0x04aec7c0 (__memcpy_avx_unalign) R-> (2018.0) 0x04850f90 __memcpy_avx_unaligned_erms
+--387560--     new: 0x04aec7c0 (__memcpy_avx_unalign) R-> (2018.1) 0x04852880 memmove
+--387560-- REDIR: 0x4a113f0 (libc.so.6:wcscmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f59e0 (libc.so.6:stpncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x4a119b0 (libc.so.6:wmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f4830 (libc.so.6:strncmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f5a70 (libc.so.6:strcasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f4420 (libc.so.6:strcspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x4a11470 (libc.so.6:wcscpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f41d0 (libc.so.6:strcat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f5b60 (libc.so.6:strncasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f5480 (libc.so.6:bcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49fd570 (libc.so.6:memrchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f7010 (libc.so.6:strchrnul) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f4390 (libc.so.6:strcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f5b10 (libc.so.6:strcasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f46a0 (libc.so.6:strlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f48d0 (libc.so.6:strncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f5950 (libc.so.6:stpcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f53f0 (libc.so.6:memchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f4b00 (libc.so.6:strspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f57d0 (libc.so.6:mempcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f5ac0 (libc.so.6:strncasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x49f6f80 (libc.so.6:rawmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--387560-- REDIR: 0x4ae9610 (libc.so.6:__strrchr_avx2) redirected to 0x484e810 (rindex)
+--387560-- REDIR: 0x4ae9400 (libc.so.6:__strchrnul_avx2) redirected to 0x4853330 (strchrnul)
+--387560-- REDIR: 0x49f10a0 (libc.so.6:malloc) redirected to 0x4848820 (malloc)
+--387560-- REDIR: 0x4aec780 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4853440 (mempcpy)
 [INFO] Memoria arrotondata a potenza di 2: 1048576 bytes
---368341-- REDIR: 0x4ae97e0 (libc.so.6:__strlen_avx2) redirected to 0x484ed10 (strlen)
+--387560-- REDIR: 0x4ae97e0 (libc.so.6:__strlen_avx2) redirected to 0x484ed10 (strlen)
 
 [INFO] Buddy Allocator Inizializzato con successo:
 - Livelli: 16
@@ -118,35 +118,35 @@
 - Dimensione minima dei blocchi: 16 bytes
 
 ----- TEST CASI BASE -----
-[ERRORE] malloc: Impossibile allocare 0 byte
-[ERRORE] malloc: Dimensione non valida
-[ERRORE] malloc: Memoria richiesta (1048586 bytes) supera la memoria disponibile (1048576 bytes)
+[ERRORE] BuddyAllocator_malloc: Impossibile allocare 0 byte
+[ERRORE] BuddyAllocator_malloc: Dimensione non valida (<0)
+[ERRORE] BuddyAllocator_malloc: Memoria richiesta (1048586 bytes) supera la memoria disponibile (1048576 bytes)
 
 ----- TEST RIEMPIMENTO COMPLETO MEMORIA -----
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x131048, dimensione 131072 bytes
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x151048, dimensione 131072 bytes
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x171048, dimensione 131072 bytes
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x191048, dimensione 131072 bytes
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x1b1048, dimensione 131072 bytes
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x1d1048, dimensione 131072 bytes
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x1f1048, dimensione 131072 bytes
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x211048, dimensione 131072 bytes
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[ERRORE] malloc: Nessun blocco di memoria libero disponibile
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[ERRORE] malloc: Nessun blocco di memoria libero disponibile
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x131048, dimensione 131072 bytes
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x151048, dimensione 131072 bytes
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x171048, dimensione 131072 bytes
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x191048, dimensione 131072 bytes
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x1b1048, dimensione 131072 bytes
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x1d1048, dimensione 131072 bytes
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x1f1048, dimensione 131072 bytes
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x211048, dimensione 131072 bytes
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[ERRORE] BuddyAllocator_malloc: Nessun blocco di memoria libero disponibile
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[ERRORE] BuddyAllocator_malloc: Nessun blocco di memoria libero disponibile
 
 ----- TEST ALLOCAZIONE QUANDO MEMORIA PIENA -----
-[INFO] Allocazione richiesta: 10 bytes (+8 bytes overhead), livello: 15
-[ERRORE] malloc: Nessun blocco di memoria libero disponibile
+[INFO] BuddyAllocator_malloc: richiesti 10 bytes (+8 bytes overhead), livello: 15
+[ERRORE] BuddyAllocator_malloc: Nessun blocco di memoria libero disponibile
 [SUCCESSO] Nessun blocco disponibile, test superato
 
 ----- TEST DEALLOCAZIONE COMPLETA -----
@@ -162,8 +162,8 @@
 [ERRORE] Puntatore NULL fornito a free
 
 ----- TEST RIALLOCAZIONE DOPO DEALLOCAZIONE COMPLETA -----
-[INFO] Allocazione richiesta: 120000 bytes (+8 bytes overhead), livello: 3
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x131048, dimensione 131072 bytes
+[INFO] BuddyAllocator_malloc: richiesti 120000 bytes (+8 bytes overhead), livello: 3
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x131048, dimensione 131072 bytes
 [SUCCESSO] Riallocazione riuscita dopo la deallocazione completa.
 [SUCCESSO] Blocco deallocato con successo: 0x131048
 
@@ -180,46 +180,46 @@
 [ERRORE] Puntatore NULL fornito a free
 
 ----- TEST ALLOCAZIONE BLOCCHI RANDOM -----
-[INFO] Allocazione richiesta: 1 bytes (+8 bytes overhead), livello: 16
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x111058, dimensione 16 bytes
-[INFO] Allocazione richiesta: 2 bytes (+8 bytes overhead), livello: 16
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x111068, dimensione 16 bytes
-[INFO] Allocazione richiesta: 4 bytes (+8 bytes overhead), livello: 16
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x111078, dimensione 16 bytes
-[INFO] Allocazione richiesta: 8 bytes (+8 bytes overhead), livello: 16
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x111088, dimensione 16 bytes
-[INFO] Allocazione richiesta: 16 bytes (+8 bytes overhead), livello: 15
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x1110a8, dimensione 32 bytes
-[INFO] Allocazione richiesta: 32 bytes (+8 bytes overhead), livello: 14
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x111108, dimensione 64 bytes
-[INFO] Allocazione richiesta: 64 bytes (+8 bytes overhead), livello: 13
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x1111c8, dimensione 128 bytes
-[INFO] Allocazione richiesta: 128 bytes (+8 bytes overhead), livello: 12
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x111348, dimensione 256 bytes
-[INFO] Allocazione richiesta: 256 bytes (+8 bytes overhead), livello: 11
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x111648, dimensione 512 bytes
-[INFO] Allocazione richiesta: 512 bytes (+8 bytes overhead), livello: 10
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x111c48, dimensione 1024 bytes
-[INFO] Allocazione richiesta: 1024 bytes (+8 bytes overhead), livello: 9
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x112848, dimensione 2048 bytes
-[INFO] Allocazione richiesta: 2048 bytes (+8 bytes overhead), livello: 8
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x114048, dimensione 4096 bytes
-[INFO] Allocazione richiesta: 4096 bytes (+8 bytes overhead), livello: 7
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x117048, dimensione 8192 bytes
-[INFO] Allocazione richiesta: 8192 bytes (+8 bytes overhead), livello: 6
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x11d048, dimensione 16384 bytes
-[INFO] Allocazione richiesta: 16384 bytes (+8 bytes overhead), livello: 5
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x129048, dimensione 32768 bytes
-[INFO] Allocazione richiesta: 32768 bytes (+8 bytes overhead), livello: 4
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x141048, dimensione 65536 bytes
-[INFO] Allocazione richiesta: 65536 bytes (+8 bytes overhead), livello: 3
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x171048, dimensione 131072 bytes
-[INFO] Allocazione richiesta: 131072 bytes (+8 bytes overhead), livello: 2
-[SUCCESSO] malloc: Allocazione completata: indirizzo 0x1d1048, dimensione 262144 bytes
-[INFO] Allocazione richiesta: 262144 bytes (+8 bytes overhead), livello: 1
-[ERRORE] malloc: Nessun blocco di memoria libero disponibile
-[INFO] Allocazione richiesta: 524288 bytes (+8 bytes overhead), livello: 0
-[ERRORE] malloc: Nessun blocco di memoria libero disponibile
+[INFO] BuddyAllocator_malloc: richiesti 1 bytes (+8 bytes overhead), livello: 16
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x111058, dimensione 16 bytes
+[INFO] BuddyAllocator_malloc: richiesti 2 bytes (+8 bytes overhead), livello: 16
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x111068, dimensione 16 bytes
+[INFO] BuddyAllocator_malloc: richiesti 4 bytes (+8 bytes overhead), livello: 16
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x111078, dimensione 16 bytes
+[INFO] BuddyAllocator_malloc: richiesti 8 bytes (+8 bytes overhead), livello: 16
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x111088, dimensione 16 bytes
+[INFO] BuddyAllocator_malloc: richiesti 16 bytes (+8 bytes overhead), livello: 15
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x1110a8, dimensione 32 bytes
+[INFO] BuddyAllocator_malloc: richiesti 32 bytes (+8 bytes overhead), livello: 14
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x111108, dimensione 64 bytes
+[INFO] BuddyAllocator_malloc: richiesti 64 bytes (+8 bytes overhead), livello: 13
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x1111c8, dimensione 128 bytes
+[INFO] BuddyAllocator_malloc: richiesti 128 bytes (+8 bytes overhead), livello: 12
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x111348, dimensione 256 bytes
+[INFO] BuddyAllocator_malloc: richiesti 256 bytes (+8 bytes overhead), livello: 11
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x111648, dimensione 512 bytes
+[INFO] BuddyAllocator_malloc: richiesti 512 bytes (+8 bytes overhead), livello: 10
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x111c48, dimensione 1024 bytes
+[INFO] BuddyAllocator_malloc: richiesti 1024 bytes (+8 bytes overhead), livello: 9
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x112848, dimensione 2048 bytes
+[INFO] BuddyAllocator_malloc: richiesti 2048 bytes (+8 bytes overhead), livello: 8
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x114048, dimensione 4096 bytes
+[INFO] BuddyAllocator_malloc: richiesti 4096 bytes (+8 bytes overhead), livello: 7
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x117048, dimensione 8192 bytes
+[INFO] BuddyAllocator_malloc: richiesti 8192 bytes (+8 bytes overhead), livello: 6
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x11d048, dimensione 16384 bytes
+[INFO] BuddyAllocator_malloc: richiesti 16384 bytes (+8 bytes overhead), livello: 5
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x129048, dimensione 32768 bytes
+[INFO] BuddyAllocator_malloc: richiesti 32768 bytes (+8 bytes overhead), livello: 4
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x141048, dimensione 65536 bytes
+[INFO] BuddyAllocator_malloc: richiesti 65536 bytes (+8 bytes overhead), livello: 3
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x171048, dimensione 131072 bytes
+[INFO] BuddyAllocator_malloc: richiesti 131072 bytes (+8 bytes overhead), livello: 2
+[SUCCESSO] BuddyAllocator_malloc: allocazione indirizzo 0x1d1048, dimensione 262144 bytes
+[INFO] BuddyAllocator_malloc: richiesti 262144 bytes (+8 bytes overhead), livello: 1
+[ERRORE] BuddyAllocator_malloc: Nessun blocco di memoria libero disponibile
+[INFO] BuddyAllocator_malloc: richiesti 524288 bytes (+8 bytes overhead), livello: 0
+[ERRORE] BuddyAllocator_malloc: Nessun blocco di memoria libero disponibile
 
 ----- TEST DEALLOCAZIONE BLOCCHI RANDOM IN ORDINE INVERSO -----
 [ERRORE] Puntatore NULL fornito a free
@@ -242,12 +242,12 @@
 [SUCCESSO] Blocco deallocato con successo: 0x111078
 [SUCCESSO] Blocco deallocato con successo: 0x111068
 [SUCCESSO] Blocco deallocato con successo: 0x111058
---368341-- REDIR: 0x49f13e0 (libc.so.6:free) redirected to 0x484b210 (free)
-==368341==
-==368341== HEAP SUMMARY:
-==368341==     in use at exit: 0 bytes in 0 blocks
-==368341==   total heap usage: 1 allocs, 1 frees, 1,024 bytes allocated
-==368341==
-==368341== All heap blocks were freed -- no leaks are possible
-==368341==
-==368341== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--387560-- REDIR: 0x49f13e0 (libc.so.6:free) redirected to 0x484b210 (free)
+==387560==
+==387560== HEAP SUMMARY:
+==387560==     in use at exit: 0 bytes in 0 blocks
+==387560==   total heap usage: 1 allocs, 1 frees, 1,024 bytes allocated
+==387560==
+==387560== All heap blocks were freed -- no leaks are possible
+==387560==
+==387560== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

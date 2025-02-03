@@ -4,7 +4,7 @@
 
 #define BITMAP_SIZE 1 << 14
 #define BUDDY_LEVELS 16
-#define MEMORY_SIZE ((1024 * 1024) + 1)                 // 1MB + 1 byte per testare l'arrotondamento
+#define MEMORY_SIZE (1024 * 1024)                       // 1MB
 #define MIN_BUCKET_SIZE (MEMORY_SIZE >> (BUDDY_LEVELS)) // 2^20 - 2^16 = 2^4 = 16
 
 char bitmap_buffer[BITMAP_SIZE];
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     printf("\n----- TEST ALLOCAZIONE BLOCCHI DI DIMENSIONE VARIABILE -----\n");
     for (int i = 0; i < 20; i++)
     {
-        blocks[i] = pseudo_malloc(&alloc, (1 << i) % 5000);
+        blocks[i] = pseudo_malloc(&alloc, (1 << i) % 5000); // dimensioni variabili ma limitate a 4999 bytes, dopo la quale riduce la dimensione richiesta
     }
 
     // Test deallocazione completa
@@ -79,7 +79,6 @@ int main(int argc, char **argv)
     void *big_block = pseudo_malloc(&alloc, MEMORY_SIZE * 2); //  metà della memoria totale
     if (big_block)
     {
-        printf("[SUCCESSO] Allocazione di %d bytes riuscita\n", MEMORY_SIZE * 2);
         pseudo_free(&alloc, &big_block);
     }
     else
@@ -90,7 +89,6 @@ int main(int argc, char **argv)
     void *big_block2 = pseudo_malloc(&alloc, MEMORY_SIZE * 20);
     if (big_block2)
     {
-        printf("[SUCCESSO] Allocazione di %d bytes riuscita\n", MEMORY_SIZE * 20);
         pseudo_free(&alloc, &big_block2);
     }
     else
@@ -101,7 +99,6 @@ int main(int argc, char **argv)
     void *big_block3 = pseudo_malloc(&alloc, MEMORY_SIZE * 2000);
     if (big_block3)
     {
-        printf("[SUCCESSO] Allocazione di %d bytes riuscita\n", MEMORY_SIZE * 2000);
         pseudo_free(&alloc, &big_block3);
     }
     else
@@ -132,6 +129,7 @@ int main(int argc, char **argv)
     }
 
     // Dealloca il resto
+    printf("\n----- DEALLOCO IL RESTO -----\n");
     for (int i = 0; i < 10; i++)
     {
         if (alt_blocks[i])

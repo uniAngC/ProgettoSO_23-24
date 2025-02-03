@@ -31,10 +31,12 @@ void BitMap_setBit(BitMap *bit_map, int bit_num, int status)
     int bit_in_byte = bit_num & 0x07; // primi 3 bit meno significativi sono la posizione all'interno del byte
     if (status)
     {
+        // imposta il bit a 1
         bit_map->buffer[byte_num] |= (1 << bit_in_byte);
     }
     else
     {
+        // imposta il bit a 0
         bit_map->buffer[byte_num] &= ~(1 << bit_in_byte);
     }
 }
